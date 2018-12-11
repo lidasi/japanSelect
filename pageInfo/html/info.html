@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="../css/info.css" type="text/css">
     <link rel="stylesheet" href="../tool/bootstrap/css/bootstrap.min.css" type="text/css">
+    <script src="../js/queryjs/info.js"></script>
 </head>
 <body>
 
@@ -14,33 +15,37 @@
 </div>
 <div class="menu">
     <div id="totla">
-        <div id="top" class="page-header">
-            <h1>相关内容查询</h1>
+        <div id="top" class="page-header input-group">
+            <div class="input-group col-sm-6 col-sm-offset-3">
+                <input type="text" class="form-control" placeholder="输出想要查询的单词" aria-describedby="basic-addon2">
+                <span class="input-group-addon btn btn-info" id="basic-addon2">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
+                </span>
+            </div>
         </div>
         <div id="left" class="nav">
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" class="active"><a href="#">Home</a></li>
-                <li role="presentation"><a href="#">Profile</a></li>
-                <li role="presentation"><a href="#">Messages</a></li>
+                <li role="presentation" class="active"><a href="#">新编日语单词</a></li>
+                <li role="presentation"><a href="#">新编日语语法</a></li>
+                <li role="presentation"><a href="#">N2红宝书</a></li>
+                <li role="presentation"><a href="#">资料整理</a></li>
+                <li role="presentation"><a href="#">相关文章</a></li>
             </ul>
         </div>
         <div id="center">
             <div class="panel panel-info">
                 <!-- Default panel contents -->
-                <div class="panel-heading">查询结果</div>
+                <div class="panel-heading">アイデア/アイディア(idea)</div>
                 <div class="panel-body">
-                    <p>A</p>
-                    <h4>Some default panel content here. Nulla vitae elit libero, a pharetra augue. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.</h4>
+                    <blockquote>
+                        <p>[名]:想法、主意</p>
+                        <footer>すばらしいアイデア。<cite title="Source Title">妙点子</cite></footer>
+                        <footer>よいアイデアが浮かぶ。<cite title="Source Title">浮现出一个好主意</cite></footer>
+                        <footer>类似：思いつき（おもいつき）<cite title="Source Title">「名」灵机一动，偶然想起;主意，设想，点子</cite></footer>
+                    </blockquote>
                 </div>
 
-                <!-- List group -->
-                <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
+
             </div>
         </div>
         <div id="bottom"></div>
@@ -48,119 +53,7 @@
 
 </div>
 <script src="../js/three.js"></script>
-
-<script>
-
-    var container, stats;
-    var camera, scene, renderer;
-    var object;
-    var radius = 100, theta = 0;
-
-    init();
-    animate();
-    initGrid();
-
-    function init() {
-        container = document.getElementById('info');
-        document.body.appendChild( container );
-
-        camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.layers.enable( 0 ); // enabled by default
-        camera.layers.enable( 1 );
-        camera.layers.enable( 2 );
-
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color( 0xf0f0f0 );
-
-        var light = new THREE.PointLight( 0xffffff, 1 );
-        light.layers.enable( 0 );
-        light.layers.enable( 1 );
-        light.layers.enable( 2 );
-
-        scene.add( camera );
-        camera.add( light );
-
-        var colors = [ 0xff0000, 0x00ff00, 0x0000ff ];
-        var geometry = new THREE.BoxBufferGeometry( 20, 20, 20 );
-        var layer;
-
-        for ( var i = 0; i < 300; i ++ ) {
-
-            layer = ( i % 3 );
-
-            object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: colors[ layer ] } ) );
-
-
-            object.position.x = Math.random() * 800 - 400;
-            console.log(object.position.x);
-            object.position.y = Math.random() * 800 - 400;
-            object.position.z = Math.random() * 800 - 400;
-
-            object.rotation.x = Math.random() * 2 * Math.PI;
-            object.rotation.y = Math.random() * 2 * Math.PI;
-            object.rotation.z = Math.random() * 2 * Math.PI;
-
-            object.scale.x = Math.random() + 0.5;
-            object.scale.y = Math.random() + 0.5;
-            object.scale.z = Math.random() + 0.5;
-
-            object.layers.set( layer );
-
-            scene.add( object );
-
-        }
-
-        renderer = new THREE.WebGLRenderer();
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
-
-        window.addEventListener( 'resize', onWindowResize, false );
-
-    }
-
-    function onWindowResize() {
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-    }
-
-    //
-
-    function animate() {
-
-        object.rotation.y +=0.01
-        object.rotation.x +=0.01
-        render();
-        requestAnimationFrame( animate );
-        //stats.update();
-
-    }
-    //生成网格
-    function initGrid(){
-        // 网格的边长是1000，每个小网格的边长是50
-        var helper = new THREE.GridHelper( 1000, 50 );
-        helper.setColors( 0x0000ff, 0x808080 );
-        scene.add( helper );
-    }
-
-    function render() {
-
-        theta += 0.1;
-
-        camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
-        camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
-        camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
-        camera.lookAt( scene.position );
-
-        renderer.render( scene, camera );
-
-    }
-
-</script>
+<script src="../js/queryjs/webgl.js"></script>
 
 </body>
 </html>
