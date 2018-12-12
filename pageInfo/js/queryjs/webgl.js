@@ -105,7 +105,6 @@ function render() {
     camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
     camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
     camera.lookAt( scene.position );
-    console.log(scene);
     renderer.render( scene, camera );
 
 }

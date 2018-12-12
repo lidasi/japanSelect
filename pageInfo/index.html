@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebGL代码体验</title>
+    <!--插件 JS-->
+    <script src="js/utilJs/director.min.js"></script>
+    <script src="js/utilJs/jquery-3.2.1.min.js"></script>
+    <script src="tool/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--页面js-->
+    <script src="model/content/content.js"></script>
+    <script src="model/head/head.js"></script>
+    <script src="model/menu/menu.js"></script>
+    <script src="model/grammar/grammar.js"></script>
+
+    <!--插件css-->
+    <link rel="stylesheet" href="tool/bootstrap/css/bootstrap.min.css">
+    <!--页面css-->
+    <link rel="stylesheet" href="css/info.css">
+
+</head>
+<body>
+<div id="info">
+    <!--<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl layers-->
+</div>
+    <div class="menu">
+        <div class="totla">
+            <div id="head" class="page-header input-group"></div>
+            <div id="menu" class="nav"></div>
+            <div id="content"></div>
+        </div>
+    </div>
+    <script>
+        // app constant
+        const appConst = {
+            viewPrefix: "view/",
+            httpUrl: "http://localhost:8080/pageInfo",
+            sliderIntervalTime: 6000
+        };
+
+        var _sliderInterval;
+
+        $('document').ready(function() {
+            $("#head").load(appConst.viewPrefix + "head.html");
+            $("#menu").load(appConst.viewPrefix + "menu.html");
+            // router setting
+            var init = function() {
+                $("#content").load(appConst.viewPrefix + "content/content.html");
+            };
+            var load = function() {
+                var arr = Array.prototype.slice.call(arguments);
+                var url = arr.join("/");
+                if (document.documentElement) {
+                    document.documentElement.scrollTop = 0;
+                }
+                if (document.body) {
+                    document.body.scrollTop = 0;
+                }
+                clearInterval(_sliderInterval);
+                $("#content").load(appConst.viewPrefix + url + ".html");
+            };
+            var routes = {
+                '/': init,
+                '/:url': load,
+                '/:url/:url': load,
+                '/:url/:url/:url': load
+            };
+            var router = Router(routes);
+            router.configure({
+            });
+            router.init('/');
+
+            /*$("body").bind("keydown",function(e) {
+                e = window.event || e;
+
+                //禁止空格键翻页
+                if(event.keyCode == 32) {
+                    return false;
+                }
+
+                //屏蔽F5刷新键
+                // if(event.keyCode==116){
+                //  e.keyCode = 0; //IE下需要设置为keyCode为false
+                //  return false;
+                // }
+
+                //屏蔽 Alt+ 方向键 ←
+                //屏蔽 Alt+ 方向键 →
+                if ((event.altKey) && ((event.keyCode==37) || (event.keyCode==39))) {
+                    event.returnValue = false;
+                    return false;
+                }
+
+                //屏蔽退格删除键
+                if(event.keyCode == 8) {
+                    return false;
+                }
+
+                //屏蔽ctrl+R
+                if((event.ctrlKey) && (event.keyCode==82)) {
+                    e.keyCode = 0;
+                    return false;
+                }
+            });*/
+
+        });
+    </script>
+    <script src="js/three.js"></script>
+    <script src="js/queryjs/webgl.js"></script>
+
+</body>
+</html>

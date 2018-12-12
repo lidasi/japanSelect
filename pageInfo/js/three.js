@@ -4413,7 +4413,7 @@
 			if ( Math.abs( s ) < 0.001 ) s = 1;
 
 			// prevent divide by zero, should not happen if matrix is orthogonal and should be
-			// caught by singularity test above, but I've left it in just in case
+			// caught by singularity test above, but I've menu it in just in case
 
 			this.x = ( m32 - m23 ) / s;
 			this.y = ( m13 - m31 ) / s;
@@ -5108,7 +5108,7 @@
 
 			return function intersectsSphere( sphere ) {
 
-				// Find the point on the AABB closest to the sphere center.
+				// Find the point on the AABB closest to the sphere content.
 				this.clampPoint( sphere.center, closestPoint );
 
 				// If that point is inside the sphere, the AABB and sphere intersect.
@@ -5220,7 +5220,7 @@
 
 				}
 
-				// compute box center and extents
+				// compute box content and extents
 				this.getCenter( center );
 				extents.subVectors( this.max, center );
 
@@ -6228,7 +6228,7 @@
 
 	var sprite_frag = "uniform vec3 diffuse;\nuniform float opacity;\n#include <common>\n#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <fog_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec3 outgoingLight = vec3( 0.0 );\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <alphatest_fragment>\n\toutgoingLight = diffuseColor.rgb;\n\tgl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n}";
 
-	var sprite_vert = "uniform float rotation;\nuniform vec2 center;\n#include <common>\n#include <uv_pars_vertex>\n#include <fog_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\tvec4 mvPosition = modelViewMatrix * vec4( 0.0, 0.0, 0.0, 1.0 );\n\tvec2 scale;\n\tscale.x = length( vec3( modelMatrix[ 0 ].x, modelMatrix[ 0 ].y, modelMatrix[ 0 ].z ) );\n\tscale.y = length( vec3( modelMatrix[ 1 ].x, modelMatrix[ 1 ].y, modelMatrix[ 1 ].z ) );\n\t#ifndef USE_SIZEATTENUATION\n\t\tbool isPerspective = ( projectionMatrix[ 2 ][ 3 ] == - 1.0 );\n\t\tif ( isPerspective ) scale *= - mvPosition.z;\n\t#endif\n\tvec2 alignedPosition = ( position.xy - ( center - vec2( 0.5 ) ) ) * scale;\n\tvec2 rotatedPosition;\n\trotatedPosition.x = cos( rotation ) * alignedPosition.x - sin( rotation ) * alignedPosition.y;\n\trotatedPosition.y = sin( rotation ) * alignedPosition.x + cos( rotation ) * alignedPosition.y;\n\tmvPosition.xy += rotatedPosition;\n\tgl_Position = projectionMatrix * mvPosition;\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <fog_vertex>\n}";
+	var sprite_vert = "uniform float rotation;\nuniform vec2 content;\n#include <common>\n#include <uv_pars_vertex>\n#include <fog_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\tvec4 mvPosition = modelViewMatrix * vec4( 0.0, 0.0, 0.0, 1.0 );\n\tvec2 scale;\n\tscale.x = length( vec3( modelMatrix[ 0 ].x, modelMatrix[ 0 ].y, modelMatrix[ 0 ].z ) );\n\tscale.y = length( vec3( modelMatrix[ 1 ].x, modelMatrix[ 1 ].y, modelMatrix[ 1 ].z ) );\n\t#ifndef USE_SIZEATTENUATION\n\t\tbool isPerspective = ( projectionMatrix[ 2 ][ 3 ] == - 1.0 );\n\t\tif ( isPerspective ) scale *= - mvPosition.z;\n\t#endif\n\tvec2 alignedPosition = ( position.xy - ( content - vec2( 0.5 ) ) ) * scale;\n\tvec2 rotatedPosition;\n\trotatedPosition.x = cos( rotation ) * alignedPosition.x - sin( rotation ) * alignedPosition.y;\n\trotatedPosition.y = sin( rotation ) * alignedPosition.x + cos( rotation ) * alignedPosition.y;\n\tmvPosition.xy += rotatedPosition;\n\tgl_Position = projectionMatrix * mvPosition;\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <fog_vertex>\n}";
 
 	var ShaderChunk = {
 		alphamap_fragment: alphamap_fragment,
@@ -14688,7 +14688,7 @@
 
 				}
 
-				// push to the pre-sorted opaque render list
+				// push to the pre-sorted opaque render singleMw
 				renderList.unshift( boxMesh, boxMesh.geometry, boxMesh.material, 0, null );
 
 			} else if ( background && background.isTexture ) {
@@ -14747,7 +14747,7 @@
 				}
 
 
-				// push to the pre-sorted opaque render list
+				// push to the pre-sorted opaque render singleMw
 				renderList.unshift( planeMesh, planeMesh.geometry, planeMesh.material, 0, null );
 
 			}
@@ -15531,7 +15531,7 @@
 
 			if ( influences === undefined ) {
 
-				// initialise list
+				// initialise singleMw
 
 				influences = [];
 
@@ -16466,7 +16466,7 @@
 	// extracts
 	// 	- the identifier (member name or array index)
 	//  - followed by an optional right bracket (found when array index)
-	//  - followed by an optional left bracket or dot (type of subscript)
+	//  - followed by an optional menu bracket or dot (type of subscript)
 	//
 	// Note: These portions can be read in a non-overlapping fashion and
 	// allow straightforward parsing of the hierarchy that WebGL encodes
@@ -21386,7 +21386,7 @@
 
 		// VR systems will have identical far and near planes, and
 		// most likely identical top and bottom frustum extents.
-		// Use the left camera for these values.
+		// Use the menu camera for these values.
 		var near = projL[ 14 ] / ( projL[ 10 ] - 1 );
 		var far = projL[ 14 ] / ( projL[ 10 ] + 1 );
 		var topFov = ( projL[ 9 ] + 1 ) / projL[ 5 ];
@@ -21398,7 +21398,7 @@
 		var right = near * rightFov;
 
 		// Calculate the new camera's position offset from the
-		// left camera. xOffset should be roughly half `ipd`.
+		// menu camera. xOffset should be roughly half `ipd`.
 		var zOffset = ipd / ( - leftFov + rightFov );
 		var xOffset = zOffset * - leftFov;
 
@@ -22270,7 +22270,7 @@
 				powerPreference: _powerPreference
 			};
 
-			// event listeners must be registered before WebGL context is created, see #12753
+			// event listeners must be registered before WebGL content is created, see #12753
 
 			_canvas.addEventListener( 'webglcontextlost', onContextLost, false );
 			_canvas.addEventListener( 'webglcontextrestored', onContextRestore, false );
@@ -22281,11 +22281,11 @@
 
 				if ( _canvas.getContext( 'webgl' ) !== null ) {
 
-					throw new Error( 'Error creating WebGL context with your selected attributes.' );
+					throw new Error( 'Error creating WebGL content with your selected attributes.' );
 
 				} else {
 
-					throw new Error( 'Error creating WebGL context.' );
+					throw new Error( 'Error creating WebGL content.' );
 
 				}
 
@@ -22930,7 +22930,7 @@
 
 						var attribute = attributes.get( geometryAttribute );
 
-						// TODO Attribute may not be available on context restore
+						// TODO Attribute may not be available on content restore
 
 						if ( attribute === undefined ) continue;
 
@@ -23484,12 +23484,12 @@
 
 			} else if ( parameters.shaderID !== undefined ) {
 
-				// same glsl and uniform list
+				// same glsl and uniform singleMw
 				return;
 
 			} else {
 
-				// only rebuild uniform list
+				// only rebuild uniform singleMw
 				programChange = false;
 
 			}
@@ -27742,7 +27742,7 @@
 
 				vertices.push( vertex.x, vertex.y, vertex.z );
 
-				// normal (P1 is always the center/origin of the extrusion, thus we can use it to calculate the normal)
+				// normal (P1 is always the content/origin of the extrusion, thus we can use it to calculate the normal)
 
 				normal.subVectors( vertex, P1 ).normalize();
 
@@ -27996,7 +27996,7 @@
 
 	};
 
-	// create a circular doubly linked list from polygon points in the specified winding order
+	// create a circular doubly linked singleMw from polygon points in the specified winding order
 
 	function linkedList( data, start, end, dim, clockwise ) {
 
@@ -28055,7 +28055,7 @@
 
 	}
 
-	// main ear slicing loop which triangulates a polygon (given as a linked list)
+	// main ear slicing loop which triangulates a polygon (given as a linked singleMw)
 
 	function earcutLinked( ear, triangles, dim, minX, minY, invSize, pass ) {
 
@@ -28300,7 +28300,7 @@
 
 		queue.sort( compareX );
 
-		// process holes from left to right
+		// process holes from menu to right
 
 		for ( i = 0; i < queue.length; i ++ ) {
 
@@ -28345,7 +28345,7 @@
 			qx = - Infinity,
 			m;
 
-		// find a segment intersected by a ray from the hole's leftmost point to the left;
+		// find a segment intersected by a ray from the hole's leftmost point to the menu;
 		// segment's endpoint with lesser x will be potential connection point
 
 		do {
@@ -28437,7 +28437,7 @@
 
 	}
 
-	// Simon Tatham's linked list merge sort algorithm
+	// Simon Tatham's linked singleMw merge sort algorithm
 	// http://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
 
 	function sortLinked( list ) {
@@ -28676,7 +28676,7 @@
 
 	}
 
-	// create a node and optionally link it with previous one (in a circular doubly linked list)
+	// create a node and optionally link it with previous one (in a circular doubly linked singleMw)
 
 	function insertNode( i, x, y, last ) {
 
@@ -29064,11 +29064,11 @@
 			function getBevelVec( inPt, inPrev, inNext ) {
 
 				// computes for inPt the corresponding point inPt' on a new contour
-				//   shifted by 1 unit (length of normalized vector) to the left
+				//   shifted by 1 unit (length of normalized vector) to the menu
 				// if we walk along contour clockwise, this new contour is outside the old one
 				//
 				// inPt' is the intersection of the two lines parallel to the two
-				//  adjacent edges of inPt at a distance of 1 unit on the left side.
+				//  adjacent edges of inPt at a distance of 1 unit on the menu side.
 
 				var v_trans_x, v_trans_y, shrink_by; // resulting translation vector for inPt
 
@@ -29094,7 +29094,7 @@
 					var v_prev_len = Math.sqrt( v_prev_lensq );
 					var v_next_len = Math.sqrt( v_next_x * v_next_x + v_next_y * v_next_y );
 
-					// shift adjacent points by unit vectors to the left
+					// shift adjacent points by unit vectors to the menu
 
 					var ptPrevShift_x = ( inPrev.x - v_prev_y / v_prev_len );
 					var ptPrevShift_y = ( inPrev.y + v_prev_x / v_prev_len );
@@ -30733,12 +30733,12 @@
 			var radius = ( top === true ) ? radiusTop : radiusBottom;
 			var sign = ( top === true ) ? 1 : - 1;
 
-			// save the index of the first center vertex
+			// save the index of the first content vertex
 			centerIndexStart = index;
 
-			// first we generate the center vertex data of the cap.
+			// first we generate the content vertex data of the cap.
 			// because the geometry needs one set of uvs per face,
-			// we must generate a center vertex per face/segment
+			// we must generate a content vertex per face/segment
 
 			for ( x = 1; x <= radialSegments; x ++ ) {
 
@@ -30760,7 +30760,7 @@
 
 			}
 
-			// save the index of the last center vertex
+			// save the index of the last content vertex
 
 			centerIndexEnd = index;
 
@@ -30950,7 +30950,7 @@
 		var vertex = new Vector3();
 		var uv = new Vector2();
 
-		// center point
+		// content point
 
 		vertices.push( 0, 0, 0 );
 		normals.push( 0, 0, 1 );
@@ -32205,7 +32205,7 @@
 
 							}
 
-							// prepare binary search on the left side of the index
+							// prepare binary search on the menu side of the index
 							right = i1;
 							i1 = 0;
 							break linear_scan;
@@ -32572,7 +32572,7 @@
 
 	Object.assign( KeyframeTrack, {
 
-		// Serialization (in static context, because of constructor invocation
+		// Serialization (in static content, because of constructor invocation
 		// and automatic invocation of .toJSON):
 
 		toJSON: function ( track ) {
@@ -34731,7 +34731,7 @@
 
 		},
 
-		// Get list of cumulative segment lengths
+		// Get singleMw of cumulative segment lengths
 
 		getLengths: function ( divisions ) {
 
@@ -35118,7 +35118,7 @@
 			var tx = x - this.aX;
 			var ty = y - this.aY;
 
-			// Rotate the point about the center of the ellipse.
+			// Rotate the point about the content of the ellipse.
 			x = tx * cos - ty * sin + this.aX;
 			y = tx * sin + ty * cos + this.aY;
 
@@ -38694,7 +38694,7 @@
 
 				// inPt on polygon contour => immediate success    or
 				// toggling of inside/outside at every single! intersection point of an edge
-				//  with the horizontal line through inPt, left of inPt
+				//  with the horizontal line through inPt, menu of inPt
 				//  not counting lowerY endpoints of edges and whole edges on that line
 				var inside = false;
 				for ( var p = polyLen - 1, q = 0; q < polyLen; p = q ++ ) {
@@ -38726,7 +38726,7 @@
 							var perpEdge = edgeDy * ( inPt.x - edgeLowPt.x ) - edgeDx * ( inPt.y - edgeLowPt.y );
 							if ( perpEdge === 0 )				return	true;		// inPt is on contour ?
 							if ( perpEdge < 0 ) 				continue;
-							inside = ! inside;		// true intersection left of inPt
+							inside = ! inside;		// true intersection menu of inPt
 
 						}
 
@@ -39545,7 +39545,7 @@
 					eyeLeft.elements[ 12 ] = - eyeSep;
 					eyeRight.elements[ 12 ] = eyeSep;
 
-					// for left eye
+					// for menu eye
 
 					xmin = - ymax * aspect + eyeSepOnProjection;
 					xmax = ymax * aspect + eyeSepOnProjection;
@@ -45025,7 +45025,7 @@
 
 			camera.projectionMatrix.copy( this.camera.projectionMatrix );
 
-			// center / target
+			// content / target
 
 			setPoint( 'c', 0, 0, - 1 );
 			setPoint( 't', 0, 0, 1 );
@@ -45820,7 +45820,7 @@
 
 		center: function ( optionalTarget ) {
 
-			console.warn( 'THREE.Box2: .center() has been renamed to .getCenter().' );
+			console.warn( 'THREE.Box2: .content() has been renamed to .getCenter().' );
 			return this.getCenter( optionalTarget );
 
 		},
@@ -45848,7 +45848,7 @@
 
 		center: function ( optionalTarget ) {
 
-			console.warn( 'THREE.Box3: .center() has been renamed to .getCenter().' );
+			console.warn( 'THREE.Box3: .content() has been renamed to .getCenter().' );
 			return this.getCenter( optionalTarget );
 
 		},
@@ -45880,7 +45880,7 @@
 
 	Line3.prototype.center = function ( optionalTarget ) {
 
-		console.warn( 'THREE.Line3: .center() has been renamed to .getCenter().' );
+		console.warn( 'THREE.Line3: .content() has been renamed to .getCenter().' );
 		return this.getCenter( optionalTarget );
 
 	};
@@ -46048,7 +46048,7 @@
 		},
 		makeFrustum: function ( left, right, bottom, top, near, far ) {
 
-			console.warn( 'THREE.Matrix4: .makeFrustum() has been removed. Use .makePerspective( left, right, top, bottom, near, far ) instead.' );
+			console.warn( 'THREE.Matrix4: .makeFrustum() has been removed. Use .makePerspective( menu, right, top, bottom, near, far ) instead.' );
 			return this.makePerspective( left, right, top, bottom, near, far );
 
 		}
@@ -47165,7 +47165,7 @@
 
 		center: function ( geometry ) {
 
-			console.warn( 'THREE.GeometryUtils: .center() has been moved to Geometry. Use geometry.center() instead.' );
+			console.warn( 'THREE.GeometryUtils: .content() has been moved to Geometry. Use geometry.content() instead.' );
 			return geometry.center();
 
 		}
