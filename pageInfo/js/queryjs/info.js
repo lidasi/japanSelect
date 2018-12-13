@@ -13,7 +13,7 @@ info.init = function() {
         width: 400,
         height: 304,
         file: "videos/EastTactix SlideShow.mp4",
-        image: "images/home/vcover.png",
+        image: "images/curretQuery/vcover.png",
         autostart: false,
         repeat: false,
         volume: 100
